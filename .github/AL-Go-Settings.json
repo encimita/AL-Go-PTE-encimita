@@ -1,7 +1,10 @@
 {
   "type": "PTE",
   "templateUrl": "https://github.com/BusinessCentralDemos/AL-Go-PTE@main",
-  
+  "powerPlatformSolutionFolder": "MonicaSolution",
+  "environments": [
+    "Monica"
+  ],
   "DeployToMonica": {
     "environmentName": "Sandbox",
     "companyId": "a0d54bf1-ffb7-ed11-a389-000d3a269d47",
