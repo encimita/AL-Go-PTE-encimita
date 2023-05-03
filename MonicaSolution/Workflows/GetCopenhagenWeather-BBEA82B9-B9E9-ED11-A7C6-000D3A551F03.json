@@ -1,0 +1,88 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_dynamicssmbsaas": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "mon123_shareddynamicssmbsaas_66147"
+        },
+        "api": {
+          "name": "shared_dynamicssmbsaas"
+        }
+      },
+      "shared_msnweather": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "mon123_sharedmsnweather_3fa1e"
+        },
+        "api": {
+          "name": "shared_msnweather"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "splitOn": "@triggerBody()['rows']",
+          "metadata": {
+            "operationMetadataId": "04282241-1a0c-4297-a247-af9c49dcfa8a"
+          },
+          "type": "Request",
+          "kind": "ApiConnection",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "required": []
+            },
+            "host": {
+              "connection": {
+                "name": "@parameters('$connections')['shared_dynamicssmbsaas']['connectionId']"
+              }
+            },
+            "operationId": "ForASelectedRecordV3",
+            "parameters": {}
+          }
+        }
+      },
+      "actions": {
+        "Get_forecast_for_today": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "3a12ab13-1357-4e84-be5a-54c3e6b91bad"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_msnweather",
+              "operationId": "TodaysForecast",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_msnweather"
+            },
+            "parameters": {
+              "Location": "Copenhagen",
+              "units": "C"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}
