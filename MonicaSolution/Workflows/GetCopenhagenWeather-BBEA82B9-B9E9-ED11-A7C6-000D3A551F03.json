@@ -71,7 +71,7 @@
               "apiId": "/providers/Microsoft.PowerApps/apis/shared_msnweather"
             },
             "parameters": {
-              "Location": "Copenhagen",
+              "Location": "Stockholm",
               "units": "C"
             },
             "authentication": {
